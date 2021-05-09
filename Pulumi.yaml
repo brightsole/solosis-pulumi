@@ -1,0 +1,3 @@
+name: solosis
+runtime: nodejs
+description: dumb planning database storage service

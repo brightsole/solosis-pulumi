@@ -1,0 +1,7 @@
+config:
+  aws:region: ap-southeast-2
+  cloud:provider: aws
+  solosis:region: ap-southeast-2
+  solosis:tableName: items
+  solosis:token:
+    secure: AAABALkYxYNxme5G7fQILhlj//5a5zPy+3/evHDKUM1TYEmcbwXZvd6pSeWFPUE9FYv76ffrddF/fA==
