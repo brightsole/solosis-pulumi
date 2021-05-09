@@ -25,6 +25,18 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
   </summary>
   <br />
 
+#### STEPS
+- fork it
+- *(probably)* brew install pulumi
+- `npm ci`
+- `pulumi login`
+- `pulumi config set --secret token "some new secret token"` *(don't want to keep the same token I've set, i don't think it'll even let you)*
+- `pulumi up`
+
+That will output the URL you've deployed the service to in AWS! EXCITING!!!
+
+Then you can start by modifying things and actually make it descriptive! `Items` is a terrible database name, and an `item` is so generic that it's impossible to know what to expect. Just start bashing away, you can even point a frontend at it, and have a beautiful working backend seconds after getting started!
+
 #### THE PULUMI THAT GOT THIS STARTED
 `pulumi config set aws:region ap-southeast-2`
 `pulumi config set region ap-southeast-2`
@@ -42,9 +54,8 @@ It ends up being quite easy to use and to parse.
 1. replacing CD complexity for `graphql-shield`
   - instead of doing things like putting this behind a private VPC subnet, I've decided to have a very basic auth `x-auth-token` header that is checked against requests. That means these apis will remain accessible to anyone that knows the token you set. But that's actually an amazing thing; that means you can test the service **fully** before implementing the gateway, and even after you've done so. The `x-auth-token` header that you send through in your requests can just be added to the federation gateway, and you'll have secure apis **and** the ability to test changes in your microservices.
 2. ORM.
-  - Dynamodb is complicated, like, quite complicated. I was more comfortable with the much more object-like syntax used by `mongodb` and other modern databases. I wrote less than 100 lines of code to make it appear the same on the outside. I found dynamodb syntax to be full of gotchas like reserved keywords and funky wording. I didn't want to make the end user learn yet another database syntax; the lest fun part of any service.
+  - Dynamodb is complicated, like, quite complicated. I was more comfortable with the much more object-like syntax used by `mongodb` and other modern databases. I wrote less than 100 lines of code to make it appear the same on the outside. I found dynamodb syntax to be full of gotchas like reserved keywords and funky wording. I didn't want to make the end user learn yet another database syntax; the least fun part of any service.
 3. There are, as yet, no schemas beyond those defined by `graphql`. I suspect I'll be adding `yup` soon so you can have identical frontend & backend schema validation.
-4. 
 
 </details>
 <br/>
