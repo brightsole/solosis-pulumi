@@ -1,4 +1,5 @@
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import { rule, shield } from 'graphql-shield';
 import { Item, Input, GenericItemPayload } from './types';
 import getEnv from './env';
@@ -22,10 +23,8 @@ export const getPermissions = () =>
 
 export const getResolvers = () => ({
   Query: {
-    item: async (_: any, id: string, { dataSources }: any) => {
-      const item = await dataSources.itemSource.getItem(id);
-      return { item, success: true };
-    },
+    item: async (_: any, id: string, { dataSources }: any) => dataSources.itemSource.getItem(id),
+    items: async (_: any, query: any, { dataSources }: any) => dataSources.itemSource.query(query),
   },
 
   Mutation: {
@@ -43,4 +42,5 @@ export const getResolvers = () => ({
   },
 
   DateTime: GraphQLDateTime,
+  JSONObject: GraphQLJSONObject,
 });

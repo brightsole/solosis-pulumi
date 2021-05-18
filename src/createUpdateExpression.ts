@@ -1,40 +1,19 @@
-export type Expression = {
-  UpdateExpression: string;
-  ExpressionAttributeNames: {
-    [key: string]: string;
-  };
-  ExpressionAttributeValues: {
-    [key: string]: string;
-  };
-};
+import { createExpressions, ExpressionAttributes } from './createExpressions';
 
-export default (item: any): Expression => {
+export type UpdateExpression = {
+  UpdateExpression: string;
+} & ExpressionAttributes;
+
+export const createUpdateExpression = (item: any, override: string = ''): UpdateExpression => {
   const now = new Date();
   const fields = { ...item, updatedAt: now.toISOString() };
 
-  const baseExpression: Expression = {
-    UpdateExpression: 'SET #createdAt = if_not_exists(#createdAt, :createdAt),',
-    ExpressionAttributeNames: { '#createdAt': 'createdAt' },
-    ExpressionAttributeValues: {
-      ':createdAt': now.toISOString(),
-    },
-  };
-
   const { length } = Object.keys(fields);
-  return Object.entries(fields).reduce(
-    (expression, [key, value]: any, i): Expression => ({
-      ExpressionAttributeNames: {
-        ...expression.ExpressionAttributeNames,
-        [`#${key}`]: key,
-      },
-      ExpressionAttributeValues: {
-        ...expression.ExpressionAttributeValues,
-        [`:${key}`]: value,
-      },
-      UpdateExpression: `${expression.UpdateExpression} #${key} = :${key}${
-        i === length - 1 ? '' : ','
-      }`,
-    }),
-    baseExpression
+  const updateExpression = Object.keys(fields).reduce(
+    (expression: string, key: string, i: number): string =>
+      `${expression}#${key} = :${key}${i === length - 1 ? '' : ', '}`,
+    override
   );
+
+  return { ...createExpressions(fields), UpdateExpression: updateExpression };
 };

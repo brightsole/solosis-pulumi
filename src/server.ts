@@ -8,9 +8,14 @@ import Database from './db';
 import getEnv from './env';
 
 const httpHeadersPlugin = require('apollo-server-plugin-http-headers');
+const { nanoid } = require('nanoid');
 
 const createServer = () => {
-  const itemSource = new Database({ tableName: getEnv().tableName });
+  const itemSource = new Database({
+    tableName: getEnv().tableName,
+    region: getEnv().region,
+    getId: nanoid,
+  });
 
   const typeDefs: any = getSchema();
   const resolvers = getResolvers();
