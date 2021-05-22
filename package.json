@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.24.0",
-    "apollo-datasource": "^0.8.0",
+    "@brightsole/sleep-talk": "^0.0.2",
     "apollo-server-lambda": "^2.24.0",
     "apollo-server-plugin-http-headers": "^0.1.4",
     "graphql": "^14.7.0",

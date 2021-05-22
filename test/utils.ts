@@ -1,10 +1,10 @@
 import { ApolloServer } from 'apollo-server';
 import { buildFederatedSchema } from '@apollo/federation';
+import DataBase from '@brightsole/sleep-talk';
 import { getResolvers } from '../src/resolvers';
 import getTypeDefs from '../src/schema';
-import DataBase from '../src/db';
 
-jest.mock('../src/db');
+jest.mock('@brightsole/sleep-talk');
 
 export default (context = {}) => {
   const itemSource = new DataBase({} as any);
