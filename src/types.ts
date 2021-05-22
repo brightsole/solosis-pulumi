@@ -9,6 +9,10 @@ export type Input = {
   input: Partial<Item>;
 };
 
+export type IdObject = {
+  id: string;
+};
+
 export type GenericItemPayload = {
   success: boolean;
   item?: Item;

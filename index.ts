@@ -15,11 +15,23 @@ new aws.dynamodb.Table(config.tableName, {
   name: config.tableName,
   attributes: [
     {
+      name: 'hashKey',
+      type: 'S',
+    },
+    {
       name: 'id',
       type: 'S',
     },
     {
       name: 'name',
+      type: 'S',
+    },
+    {
+      name: 'updatedAt',
+      type: 'S',
+    },
+    {
+      name: 'createdAt',
       type: 'S',
     },
   ],
@@ -31,8 +43,23 @@ new aws.dynamodb.Table(config.tableName, {
       hashKey: 'name',
       name: 'name',
     },
+    {
+      projectionType: 'ALL',
+      writeCapacity: 5,
+      readCapacity: 5,
+      hashKey: 'updatedAt',
+      name: 'updatedAt',
+    },
+    {
+      projectionType: 'ALL',
+      writeCapacity: 5,
+      readCapacity: 5,
+      hashKey: 'createdAt',
+      name: 'createdAt',
+    },
   ],
-  hashKey: 'id',
+  hashKey: 'hashKey',
+  rangeKey: 'id',
   readCapacity: 5,
   writeCapacity: 5,
 });

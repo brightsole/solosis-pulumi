@@ -1,7 +1,7 @@
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { rule, shield } from 'graphql-shield';
-import { Item, Input, GenericItemPayload } from './types';
+import { Item, Input, IdObject, GenericItemPayload } from './types';
 import getEnv from './env';
 
 // restricts the very open api to only allow queries from sources
@@ -23,22 +23,29 @@ export const getPermissions = () =>
 
 export const getResolvers = () => ({
   Query: {
-    item: async (_: any, id: string, { dataSources }: any) => dataSources.itemSource.getItem(id),
-    items: async (_: any, query: any, { dataSources }: any) => dataSources.itemSource.query(query),
+    item: async (_: any, args: IdObject, { dataSources, hashKey }: any) =>
+      dataSources.itemSource.getItem(args.id, { hashKey }),
+    items: async (_: any, args: Input, { dataSources, hashKey }: any) =>
+      dataSources.itemSource.query(args.input, { hashKey }),
+    getAll: async (_: any, __: any, { dataSources, hashKey }: any) =>
+      dataSources.itemSource.getAll({ hashKey }),
   },
 
   Mutation: {
-    createItem: (_: any, args: Input, { dataSources }: any): Promise<GenericItemPayload> =>
-      dataSources.itemSource.createItem(args.input),
-    updateItem: (_: any, args: Input, { dataSources }: any): Promise<GenericItemPayload> =>
-      dataSources.itemSource.updateItem(args.input),
-    deleteItem: (_: any, id: string, { dataSources }: any): Promise<GenericItemPayload> =>
-      dataSources.itemSource.deleteItem(id),
+    createItem: (_: any, args: Input, { dataSources, hashKey }: any): Promise<GenericItemPayload> =>
+      dataSources.itemSource.createItem(args.input, { hashKey }),
+    updateItem: (_: any, args: Input, { dataSources, hashKey }: any): Promise<GenericItemPayload> =>
+      dataSources.itemSource.updateItem(args.input, { hashKey }),
+    deleteItem: (
+      _: any,
+      args: IdObject,
+      { dataSources, hashKey }: any
+    ): Promise<GenericItemPayload> => dataSources.itemSource.deleteItem(args.id, { hashKey }),
   },
 
   Item: {
-    __resolveReference: ({ id }: Partial<Item>, { dataSources }: any) =>
-      dataSources.itemSource.getItem(id),
+    __resolveReference: ({ id }: Partial<Item>, { dataSources, hashKey }: any) =>
+      dataSources.itemSource.getItem(id, { hashKey }),
   },
 
   DateTime: GraphQLDateTime,

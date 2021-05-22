@@ -2,9 +2,9 @@ import { ApolloServer } from 'apollo-server-lambda';
 import * as depthLimit from 'graphql-depth-limit';
 import { applyMiddleware } from 'graphql-middleware';
 import { buildFederatedSchema } from '@apollo/federation';
+import Database from '@brightsole/sleep-talk';
 import { getResolvers } from './resolvers';
 import getSchema from './schema';
-import Database from './db';
 import getEnv from './env';
 
 const httpHeadersPlugin = require('apollo-server-plugin-http-headers');
@@ -36,10 +36,11 @@ const createServer = () => {
     context: async ({ event, context }) => {
       context.callbackWaitsForEmptyEventLoop = false;
 
-      const { 'x-auth-token': token } = event.headers; // populate context with this
+      const { 'x-auth-token': token, 'x-user-id': hashKey } = event.headers; // populate context with this
       return {
         setHeaders: [],
         setCookies: [],
+        hashKey,
         token,
         event,
       };

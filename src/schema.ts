@@ -31,6 +31,7 @@ export default () => gql`
   }
 
   type ListPayload {
+    consumedCapacity: Float
     lastScannedId: ID
     items: [Item]
     count: Int
@@ -39,6 +40,7 @@ export default () => gql`
   type Query {
     item(id: ID!): GenericPayload
     items(input: JSONObject): ListPayload
+    getAll: ListPayload
   }
 
   type Mutation {
