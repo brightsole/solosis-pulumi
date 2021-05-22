@@ -1,6 +1,7 @@
 import { getResolvers } from './resolvers';
 
 describe('Resolvers', () => {
+  const hashKey = 'threeve';
   describe('Query', () => {
     it('calls getItem on the dataSource with id', async () => {
       const id = '123';
@@ -15,8 +16,8 @@ describe('Resolvers', () => {
         Query: { item },
       } = getResolvers();
 
-      await item(null, id, { dataSources });
-      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id);
+      await item(null, { id }, { dataSources, hashKey });
+      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id, { hashKey });
     });
 
     it('reference resolver calls getItem on the dataSource with { id }', async () => {
@@ -32,8 +33,8 @@ describe('Resolvers', () => {
         Item: { __resolveReference },
       } = getResolvers();
 
-      await __resolveReference({ id }, { dataSources });
-      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id);
+      await __resolveReference({ id }, { dataSources, hashKey });
+      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id, { hashKey });
     });
   });
 
@@ -51,8 +52,8 @@ describe('Resolvers', () => {
         Mutation: { createItem },
       } = getResolvers();
 
-      await createItem(null, { input: item }, { dataSources });
-      expect(dataSources.itemSource.createItem).toHaveBeenCalledWith(item);
+      await createItem(null, { input: item }, { dataSources, hashKey });
+      expect(dataSources.itemSource.createItem).toHaveBeenCalledWith(item, { hashKey });
     });
 
     it('calls updateItem on the dataSource with { id, name }', async () => {
@@ -68,8 +69,8 @@ describe('Resolvers', () => {
         Mutation: { updateItem },
       } = getResolvers();
 
-      await updateItem(null, { input: item }, { dataSources });
-      expect(dataSources.itemSource.updateItem).toHaveBeenCalledWith(item);
+      await updateItem(null, { input: item }, { dataSources, hashKey });
+      expect(dataSources.itemSource.updateItem).toHaveBeenCalledWith(item, { hashKey });
     });
 
     it('calls deleteItem on the dataSource with id', async () => {
@@ -85,8 +86,8 @@ describe('Resolvers', () => {
         Mutation: { deleteItem },
       } = getResolvers();
 
-      await deleteItem(null, id, { dataSources });
-      expect(dataSources.itemSource.deleteItem).toHaveBeenCalledWith(id);
+      await deleteItem(null, { id }, { dataSources, hashKey });
+      expect(dataSources.itemSource.deleteItem).toHaveBeenCalledWith(id, { hashKey });
     });
   });
 });

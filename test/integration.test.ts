@@ -11,7 +11,9 @@ describe('Resolver full path', () => {
     const itemMutation = gql`
       mutation createItem($input: CreateItemInput!) {
         createItem(input: $input) {
-          success
+          item {
+            id
+          }
         }
       }
     `;
@@ -21,8 +23,10 @@ describe('Resolver full path', () => {
     };
 
     itemCreateMock.mockImplementationOnce(async () => ({
-      item,
-      success: true,
+      item: {
+        id: 'threeve',
+        ...item,
+      },
     }));
 
     const { mutate } = createTestClient(server);

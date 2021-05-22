@@ -8,7 +8,6 @@ const stackConfig = new pulumi.Config();
 const config = {
   tableName: stackConfig.require('tableName'),
   token: stackConfig.requireSecret('token'),
-  region: stackConfig.require('region'),
 };
 
 // create a table to point at
@@ -16,11 +15,51 @@ new aws.dynamodb.Table(config.tableName, {
   name: config.tableName,
   attributes: [
     {
+      name: 'hashKey',
+      type: 'S',
+    },
+    {
       name: 'id',
       type: 'S',
     },
+    {
+      name: 'name',
+      type: 'S',
+    },
+    {
+      name: 'updatedAt',
+      type: 'S',
+    },
+    {
+      name: 'createdAt',
+      type: 'S',
+    },
   ],
-  hashKey: 'id',
+  globalSecondaryIndexes: [
+    {
+      projectionType: 'ALL',
+      writeCapacity: 5,
+      readCapacity: 5,
+      hashKey: 'name',
+      name: 'name',
+    },
+    {
+      projectionType: 'ALL',
+      writeCapacity: 5,
+      readCapacity: 5,
+      hashKey: 'updatedAt',
+      name: 'updatedAt',
+    },
+    {
+      projectionType: 'ALL',
+      writeCapacity: 5,
+      readCapacity: 5,
+      hashKey: 'createdAt',
+      name: 'createdAt',
+    },
+  ],
+  hashKey: 'hashKey',
+  rangeKey: 'id',
   readCapacity: 5,
   writeCapacity: 5,
 });
@@ -37,7 +76,7 @@ const endpoint = new awsx.apigateway.API('solosis', {
         environment: {
           variables: {
             TOKEN: config.token,
-            REGION: config.region,
+            REGION: pulumi.all([aws.getRegion()]).apply(([region]) => region.id),
             TABLE_NAME: config.tableName,
           },
         },

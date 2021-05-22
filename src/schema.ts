@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-lambda';
 // TODO: query for items, and payload that has useful query info
 export default () => gql`
   scalar DateTime
+  scalar JSONObject
 
   type Item @key(fields: "id") {
     id: ID!
@@ -25,12 +26,21 @@ export default () => gql`
   }
 
   type GenericPayload {
-    success: Boolean!
+    consumedCapacity: Float
     item: Item
+  }
+
+  type ListPayload {
+    consumedCapacity: Float
+    lastScannedId: ID
+    items: [Item]
+    count: Int
   }
 
   type Query {
     item(id: ID!): GenericPayload
+    items(input: JSONObject): ListPayload
+    getAll: ListPayload
   }
 
   type Mutation {
