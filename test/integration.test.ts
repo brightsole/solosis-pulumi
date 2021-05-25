@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-lambda';
 import constructTestServer from './utils';
 
 describe('Resolver full path', () => {
-  it('emits new user event if no previous session exists for user', async () => {
+  it('creates an item without error', async () => {
     const setHeaderMock = jest.fn();
     const { server, itemSource } = constructTestServer({ setHeaders: { push: setHeaderMock } });
     const itemCreateMock = itemSource.createItem as jest.Mock<any>;
