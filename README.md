@@ -40,7 +40,7 @@ Then you can start by modifying things and actually make it descriptive! `Items`
 #### THE PULUMI THAT GOT THIS STARTED
 ```sh
 pulumi config set aws:region ap-southeast-2
-pulumi config set butt:provider aws
+pulumi config set cloud:provider aws
 pulumi config set tableName items
 pulumi config set --secret token something-extra-secret
 pulumi up
