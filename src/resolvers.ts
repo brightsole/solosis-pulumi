@@ -1,7 +1,8 @@
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { rule, shield } from 'graphql-shield';
-import { Item, Input, IdObject, GenericItemPayload } from './types';
+import { Query } from '@brightsole/sleep-talk';
+import { Thing, Input, IdObject, GenericThingPayload, Context } from './types';
 import getEnv from './env';
 
 // restricts the very open api to only allow queries from sources
@@ -23,29 +24,35 @@ export const getPermissions = () =>
 
 export const getResolvers = () => ({
   Query: {
-    item: async (_: any, args: IdObject, { dataSources, hashKey }: any) =>
-      dataSources.itemSource.getItem(args.id, { hashKey }),
-    items: async (_: any, args: Input, { dataSources, hashKey }: any) =>
-      dataSources.itemSource.query(args.input, { hashKey }),
-    getAll: async (_: any, __: any, { dataSources, hashKey }: any) =>
-      dataSources.itemSource.getAll({ hashKey }),
+    thing: async (_: any, args: IdObject, { dataSources, hashKey }: Context) =>
+      dataSources.thingSource.getItem(args.id, { hashKey }),
+    things: async (_: any, args: { input: Query }, { dataSources }: Context) =>
+      dataSources.thingSource.query(args.input),
+    getAllThings: async (_: any, __: any, { dataSources, hashKey }: Context) =>
+      dataSources.thingSource.getAll({ hashKey }),
   },
 
   Mutation: {
-    createItem: (_: any, args: Input, { dataSources, hashKey }: any): Promise<GenericItemPayload> =>
-      dataSources.itemSource.createItem(args.input, { hashKey }),
-    updateItem: (_: any, args: Input, { dataSources, hashKey }: any): Promise<GenericItemPayload> =>
-      dataSources.itemSource.updateItem(args.input, { hashKey }),
-    deleteItem: (
+    createThing: (
+      _: any,
+      args: Input,
+      { dataSources, hashKey }: Context
+    ): Promise<GenericThingPayload> => dataSources.thingSource.createItem(args.input, { hashKey }),
+    updateThing: (
+      _: any,
+      args: Input,
+      { dataSources, hashKey }: Context
+    ): Promise<GenericThingPayload> => dataSources.thingSource.updateItem(args.input, { hashKey }),
+    deleteThing: (
       _: any,
       args: IdObject,
-      { dataSources, hashKey }: any
-    ): Promise<GenericItemPayload> => dataSources.itemSource.deleteItem(args.id, { hashKey }),
+      { dataSources, hashKey }: Context
+    ): Promise<GenericThingPayload> => dataSources.thingSource.deleteItem(args.id, { hashKey }),
   },
 
   Item: {
-    __resolveReference: ({ id }: Partial<Item>, { dataSources, hashKey }: any) =>
-      dataSources.itemSource.getItem(id, { hashKey }),
+    __resolveReference: ({ id }: Partial<Thing>, { dataSources, hashKey }: Context) =>
+      dataSources.thingSource.getItem(id, { hashKey }),
   },
 
   DateTime: GraphQLDateTime,

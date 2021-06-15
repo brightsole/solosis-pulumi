@@ -1,51 +1,51 @@
 import { gql } from 'apollo-server-lambda';
 
-// TODO: query for items, and payload that has useful query info
+// TODO: query for things, and payload that has useful query info
 export default () => gql`
   scalar DateTime
   scalar JSONObject
 
-  type Item @key(fields: "id") {
+  type Thing @key(fields: "id") {
     id: ID!
     name: String!
     createdAt: DateTime
     updatedAt: DateTime
   }
 
-  input CreateItemInput {
+  input CreateThingInput {
     name: String!
   }
 
-  input UpdateItemInput {
+  input UpdateThingInput {
     id: String!
     name: String!
   }
 
-  input DeleteItemInput {
+  input DeleteThingInput {
     id: String!
   }
 
-  type GenericPayload {
+  type ThingPayload {
     consumedCapacity: Float
-    item: Item
+    item: Thing
   }
 
-  type ListPayload {
+  type ThingListPayload {
     consumedCapacity: Float
     lastScannedId: ID
-    items: [Item]
+    items: [Thing]
     count: Int
   }
 
   type Query {
-    item(id: ID!): GenericPayload
-    items(input: JSONObject): ListPayload
-    getAll: ListPayload
+    item(id: ID!): ThingPayload
+    items(input: JSONObject): ThingListPayload
+    getAll: ThingListPayload
   }
 
   type Mutation {
-    createItem(input: CreateItemInput!): GenericPayload
-    updateItem(input: UpdateItemInput!): GenericPayload
-    deleteItem(id: ID!): GenericPayload
+    createThing(input: CreateThingInput!): ThingPayload
+    updateThing(input: UpdateThingInput!): ThingPayload
+    deleteThing(id: ID!): ThingPayload
   }
 `;

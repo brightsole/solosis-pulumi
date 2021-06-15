@@ -7,7 +7,7 @@ import getTypeDefs from '../src/schema';
 jest.mock('@brightsole/sleep-talk');
 
 export default (context = {}) => {
-  const itemSource = new DataBase({} as any);
+  const thingSource = new DataBase({} as any);
 
   const server = new ApolloServer({
     schema: buildFederatedSchema([
@@ -18,9 +18,9 @@ export default (context = {}) => {
     ]),
     typeDefs: getTypeDefs(),
     resolvers: getResolvers() as any,
-    dataSources: () => ({ itemSource }),
+    dataSources: () => ({ thingSource }),
     context,
   });
 
-  return { server, itemSource, context };
+  return { server, thingSource, context };
 };

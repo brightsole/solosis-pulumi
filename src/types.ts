@@ -1,4 +1,4 @@
-export type Item = {
+export type Thing = {
   id: string;
   name: string;
   createdAt: string;
@@ -6,14 +6,19 @@ export type Item = {
 };
 
 export type Input = {
-  input: Partial<Item>;
+  input: Partial<Thing>;
 };
 
 export type IdObject = {
   id: string;
 };
 
-export type GenericItemPayload = {
+export type Context = {
+  dataSources: any;
+  hashKey?: string;
+};
+
+export type GenericThingPayload = {
   success: boolean;
-  item?: Item;
+  item?: Thing;
 };

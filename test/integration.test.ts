@@ -5,12 +5,12 @@ import constructTestServer from './utils';
 describe('Resolver full path', () => {
   it('creates an item without error', async () => {
     const setHeaderMock = jest.fn();
-    const { server, itemSource } = constructTestServer({ setHeaders: { push: setHeaderMock } });
-    const itemCreateMock = itemSource.createItem as jest.Mock<any>;
+    const { server, thingSource } = constructTestServer({ setHeaders: { push: setHeaderMock } });
+    const itemCreateMock = thingSource.createItem as jest.Mock<any>;
 
-    const itemMutation = gql`
-      mutation createItem($input: CreateItemInput!) {
-        createItem(input: $input) {
+    const thingMutation = gql`
+      mutation CreateThing($input: CreateThingInput!) {
+        createThing(input: $input) {
           item {
             id
           }
@@ -31,7 +31,7 @@ describe('Resolver full path', () => {
 
     const { mutate } = createTestClient(server);
     const { errors } = await mutate({
-      mutation: itemMutation,
+      mutation: thingMutation,
       variables: { input: item },
     });
 

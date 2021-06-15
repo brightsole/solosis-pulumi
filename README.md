@@ -35,7 +35,7 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
 
 That will output the URL you've deployed the service to in AWS! EXCITING!!!
 
-Then you can start by modifying things and actually make it descriptive! `Items` is a terrible database name, and an `item` is so generic that it's impossible to know what to expect. Just start bashing away, you can even point a frontend at it, and have a beautiful working backend seconds after getting started!
+Then you can start by modifying things and actually make it descriptive! `Things` is a terrible database name, and a `thing` is so generic that it's impossible to know what to expect. Just start bashing away, you can even point a frontend at it, and have a beautiful working backend seconds after getting started!
 
 #### THE PULUMI THAT GOT THIS STARTED
 ```sh

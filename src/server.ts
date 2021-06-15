@@ -11,7 +11,7 @@ const httpHeadersPlugin = require('apollo-server-plugin-http-headers');
 const { nanoid } = require('nanoid');
 
 const createServer = () => {
-  const itemSource = new Database({
+  const thingSource = new Database({
     tableName: getEnv().tableName,
     region: getEnv().region,
     getId: nanoid,
@@ -46,7 +46,7 @@ const createServer = () => {
       };
     },
     validationRules: [depthLimit(7)],
-    dataSources: () => ({ itemSource }),
+    dataSources: () => ({ thingSource }),
   });
 };
 

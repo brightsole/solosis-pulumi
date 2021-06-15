@@ -2,12 +2,13 @@ import { getResolvers } from './resolvers';
 
 describe('Resolvers', () => {
   const hashKey = 'threeve';
-  describe('Query', () => {
-    it('calls getItem on the dataSource with id', async () => {
+
+  describe('Queries', () => {
+    it('getThing calls getItem on the dataSource with id', async () => {
       const id = '123';
 
       const dataSources = {
-        itemSource: {
+        thingSource: {
           getItem: jest.fn(() => Promise.resolve({})),
         },
       };
@@ -60,7 +61,7 @@ describe('Resolvers', () => {
       const id = '123';
 
       const dataSources = {
-        itemSource: {
+        thingSource: {
           getItem: jest.fn(() => Promise.resolve({})),
         },
       };
@@ -70,60 +71,60 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await __resolveReference({ id }, { dataSources, hashKey });
-      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id, { hashKey });
+      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, { hashKey });
     });
   });
 
-  describe('Mutate', () => {
-    it('calls createItem on the dataSource with { id, name }', async () => {
-      const item = { id: '123', name: 'widget' };
+  describe('Mutations', () => {
+    it('createThing calls createItem on the dataSource with { id, name }', async () => {
+      const input = { id: '123', name: 'widget' };
 
       const dataSources = {
-        itemSource: {
+        thingSource: {
           createItem: jest.fn(() => Promise.resolve({})),
         },
       };
 
       const {
-        Mutation: { createItem },
+        Mutation: { createThing },
       } = getResolvers();
 
-      await createItem(null, { input: item }, { dataSources, hashKey });
-      expect(dataSources.itemSource.createItem).toHaveBeenCalledWith(item, { hashKey });
+      await createThing(null, { input }, { dataSources, hashKey });
+      expect(dataSources.thingSource.createItem).toHaveBeenCalledWith(input, { hashKey });
     });
 
-    it('calls updateItem on the dataSource with { id, name }', async () => {
-      const item = { id: '123', name: 'widget' };
+    it('updateThing calls updateItem on the dataSource with { id, name }', async () => {
+      const input = { id: '123', name: 'widget' };
 
       const dataSources = {
-        itemSource: {
+        thingSource: {
           updateItem: jest.fn(() => Promise.resolve({})),
         },
       };
 
       const {
-        Mutation: { updateItem },
+        Mutation: { updateThing },
       } = getResolvers();
 
-      await updateItem(null, { input: item }, { dataSources, hashKey });
-      expect(dataSources.itemSource.updateItem).toHaveBeenCalledWith(item, { hashKey });
+      await updateThing(null, { input }, { dataSources, hashKey });
+      expect(dataSources.thingSource.updateItem).toHaveBeenCalledWith(input, { hashKey });
     });
 
-    it('calls deleteItem on the dataSource with id', async () => {
+    it('deleteThing calls deleteItem on the dataSource with id', async () => {
       const id = '123';
 
       const dataSources = {
-        itemSource: {
+        thingSource: {
           deleteItem: jest.fn(() => Promise.resolve({})),
         },
       };
 
       const {
-        Mutation: { deleteItem },
+        Mutation: { deleteThing },
       } = getResolvers();
 
-      await deleteItem(null, { id }, { dataSources, hashKey });
-      expect(dataSources.itemSource.deleteItem).toHaveBeenCalledWith(id, { hashKey });
+      await deleteThing(null, { id }, { dataSources, hashKey });
+      expect(dataSources.thingSource.deleteItem).toHaveBeenCalledWith(id, { hashKey });
     });
   });
 });
