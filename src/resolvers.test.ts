@@ -13,11 +13,47 @@ describe('Resolvers', () => {
       };
 
       const {
-        Query: { item },
+        Query: { thing },
       } = getResolvers();
 
-      await item(null, { id }, { dataSources, hashKey });
-      expect(dataSources.itemSource.getItem).toHaveBeenCalledWith(id, { hashKey });
+      await thing(null, { id }, { dataSources, hashKey });
+      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, { hashKey });
+    });
+
+    it('getAllThings calls getAll with { hashKey }', async () => {
+      // the expectation is that most queries will be getting all things related to a hash id
+      // that hash id is the user id in this implementation
+      const dataSources = {
+        thingSource: {
+          getAll: jest.fn(() => Promise.resolve([])),
+        },
+      };
+
+      const {
+        Query: { getAllThings },
+      } = getResolvers();
+
+      await getAllThings(null, {}, { dataSources, hashKey });
+      expect(dataSources.thingSource.getAll).toHaveBeenCalledWith({ hashKey });
+    });
+
+    it('things calls query with { ...query }', async () => {
+      const input = {
+        name: { $contains: 'floop' },
+      };
+      // this is the slower dynamodb scan that has a more open query structure than `getAll`
+      const dataSources = {
+        thingSource: {
+          query: jest.fn(() => Promise.resolve([])),
+        },
+      };
+
+      const {
+        Query: { things },
+      } = getResolvers();
+
+      await things(null, { input }, { dataSources });
+      expect(dataSources.thingSource.query).toHaveBeenCalledWith(input);
     });
 
     it('reference resolver calls getItem on the dataSource with { id }', async () => {
