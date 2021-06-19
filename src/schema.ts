@@ -1,6 +1,5 @@
 import { gql } from 'apollo-server-lambda';
 
-// TODO: query for things, and payload that has useful query info
 export default () => gql`
   scalar DateTime
   scalar JSONObject
