@@ -28,7 +28,7 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
 #### STEPS
 - click the `Use this template` button
 - `npm ci`
-- `npx @brightsole/solosis-codemod **THE_NEW_NAME_FOR_YOUR_DB_RESOURCE**`
+- `npx solosis-codemod **THE_NEW_NAME_FOR_YOUR_DB_RESOURCE**`
 - `pulumi login`
 - `pulumi up`
 
