@@ -26,16 +26,15 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
   <br />
 
 #### STEPS
-- fork it
-- *(probably)* brew install pulumi
+- click the `Use this template` button
 - `npm ci`
+- `npx @brightsole/solosis-codemod **THE_NEW_NAME_FOR_YOUR_DB_RESOURCE**`
 - `pulumi login`
-- `pulumi config set --secret token "some new secret token"` *(don't want to keep the same token I've set, i don't think it'll even let you)*
 - `pulumi up`
 
 That will output the URL you've deployed the service to in AWS! EXCITING!!!
 
-Then you can start by modifying configs! `Things` is a terrible database name, and a `thing` is so generic that it's impossible to know what to expect. Just start bashing away, you can even point a frontend at it, and have a beautiful working backend seconds after getting started!
+The named migration from `thing` and `things` and `someThing` is now handled by a codemod. Simply run it to replace the **monstrously generic** resource name with something useful like `image` or `bingleBop` or something!
 
 #### THE PULUMI THAT GOT THIS STARTED
 ```sh
@@ -58,6 +57,7 @@ It ends up being quite easy to use and to parse.
 1. replacing DB string complexity with an [ORM](https://www.npmjs.com/package/@brightsole/sleep-talk)
     - Dynamodb is complicated, like, quite complicated. I was more comfortable with the much more object-like syntax used by `mongodb` and other modern databases. I wrote a couple hundred lines of code to make it appear the same on the outside. I found dynamodb syntax to be full of gotchas like reserved keywords and funky wording. I didn't want to make the end user learn yet another database syntax; the least fun part of any service.
 1. There are, as yet, no schemas beyond those defined by `graphql`. I suspect I'll be adding `yup` soon so you can have identical frontend & backend schema validation.
+1. `@brightsole/solosis-codemod` is used in conjunction with templating to make this microservice super duper extra easy to roll out.
 
 </details>
 <br/>
