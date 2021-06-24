@@ -11,9 +11,9 @@
 
 Click **Use this template**, and after one `pulumi up` you'll have the bleeding edge of apollo federation lambda microservices.
 
-So many things today don't help the end user get it deployed; this project makes that the front-and-center goal. Pulumi will deploy to your AWS account and will expand your world by giving you access to a powerful set of tools.
+So many projects today don't help the end user get it deployed; this project makes that the front-and-center goal. Pulumi will deploy to your AWS account and will expand your world by giving you access to a powerful set of tools.
 
-Soon `duosion` will be about, and handle the federation; but for now, this is an **extremely usable** repo, able to spin up a GQL interface connected to a database with things like schemas, auth integrations, a kindly 1-dependency wrapper around dynamodb, eslinting guidelines, typescript, and good tests.
+Soon `duosion` will be about, and handle the federation; but for now, this is an **extremely usable** repo, able to spin up a GQL interface connected to a database with features like schemas, auth integrations, a kindly 1-dependency wrapper around dynamodb, eslinting guidelines, typescript, and good tests.
 
 </details>
 <br/>
@@ -26,23 +26,22 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
   <br />
 
 #### STEPS
-- fork it
-- *(probably)* brew install pulumi
+- click the `Use this template` button
 - `npm ci`
+- `npx solosis-codemod **THE_NEW_NAME_FOR_YOUR_DB_RESOURCE**`
 - `pulumi login`
-- `pulumi config set --secret token "some new secret token"` *(don't want to keep the same token I've set, i don't think it'll even let you)*
 - `pulumi up`
 
 That will output the URL you've deployed the service to in AWS! EXCITING!!!
 
-Then you can start by modifying things and actually make it descriptive! `Things` is a terrible database name, and a `thing` is so generic that it's impossible to know what to expect. Just start bashing away, you can even point a frontend at it, and have a beautiful working backend seconds after getting started!
+The named migration from `thing` and `things` and `someThing` is now handled by a codemod. Simply run it to replace the **monstrously generic** resource name with something useful like `image` or `bingleBop` or something!
 
 #### THE PULUMI THAT GOT THIS STARTED
 ```sh
 pulumi config set aws:region ap-southeast-2
 pulumi config set cloud:provider aws
-pulumi config set tableName items
-pulumi config set --secret token something-extra-secret
+pulumi config set tableName things
+pulumi config set --secret token some-extra-secret-secret
 pulumi up
 ```
 
@@ -52,12 +51,13 @@ It ends up being quite easy to use and to parse.
 
 
 ### CHOICES THAT HAVE BEEN MADE
-1. assuming all items within will have a `hashKey` that isn't unique, and an `id` that is. This means we're assuming most gets will be for a small list of items related to a `userId` or something similar *(implemented in this example repo as an `x-user-id` header that is put into context as `hashKey`)*
+1. assuming all items within will have a `hashKey` that isn't unique, and an `id` that is. This means we're assuming most gets will be for a small list of items related to a `userId` or anything similar *(implemented in this example repo as an `x-user-id` header that is put into context as `hashKey`)*
 1. replacing CD complexity for `graphql-shield`
-    - instead of doing things like putting this behind a private VPC subnet, I've decided to have a very basic auth `x-auth-token` header that is checked against requests. That means these apis will remain accessible to anyone that knows the token you set. But that's actually an amazing thing; that means you can test the service **fully** before implementing the gateway, and even after you've done so. The `x-auth-token` header that you send through in your requests can just be added to the federation gateway, and you'll have secure apis **and** the ability to test changes in your microservices.
+    - instead of doing complicated devops like putting this behind a private VPC subnet, I've decided to have a very basic auth `x-auth-token` header that is checked against requests. That means these apis will remain accessible to anyone that knows the token you set. But that's actually an amazing feature; that means you can test the service **fully** before implementing the gateway, and even after you've done so. The `x-auth-token` header that you send through in your requests can just be added to the federation gateway, and you'll have secure apis **and** the ability to test changes in your microservices.
 1. replacing DB string complexity with an [ORM](https://www.npmjs.com/package/@brightsole/sleep-talk)
     - Dynamodb is complicated, like, quite complicated. I was more comfortable with the much more object-like syntax used by `mongodb` and other modern databases. I wrote a couple hundred lines of code to make it appear the same on the outside. I found dynamodb syntax to be full of gotchas like reserved keywords and funky wording. I didn't want to make the end user learn yet another database syntax; the least fun part of any service.
 1. There are, as yet, no schemas beyond those defined by `graphql`. I suspect I'll be adding `yup` soon so you can have identical frontend & backend schema validation.
+1. `@brightsole/solosis-codemod` is used in conjunction with templating to make this microservice super duper extra easy to roll out.
 
 </details>
 <br/>

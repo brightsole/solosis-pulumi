@@ -22,7 +22,7 @@ describe('Resolvers', () => {
     });
 
     it('getAllThings calls getAll with { hashKey }', async () => {
-      // the expectation is that most queries will be getting all things related to a hash id
+      // the expectation is that most queries will be getting small groups related to a hash id
       // that hash id is the user id in this implementation
       const dataSources = {
         thingSource: {

@@ -1,6 +1,6 @@
 config:
   aws:region: ap-southeast-2
   cloud:provider: aws
-  things:tableName: things
-  things:token:
+  solosis-things:tableName: things
+  solosis-things:token:
     secure: AAABALkYxYNxme5G7fQILhlj//5a5zPy+3/evHDKUM1TYEmcbwXZvd6pSeWFPUE9FYv76ffrddF/fA==
