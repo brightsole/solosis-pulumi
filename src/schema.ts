@@ -37,9 +37,9 @@ export default () => gql`
   }
 
   type Query {
-    item(id: ID!): ThingPayload
-    items(input: JSONObject): ThingListPayload
-    getAll: ThingListPayload
+    thing(id: ID!): ThingPayload
+    things(input: JSONObject): ThingListPayload
+    getAllThings: ThingListPayload
   }
 
   type Mutation {

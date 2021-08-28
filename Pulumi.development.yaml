@@ -3,4 +3,4 @@ config:
   cloud:provider: aws
   solosis-things:tableName: things
   solosis-things:token:
-    secure: AAABALkYxYNxme5G7fQILhlj//5a5zPy+3/evHDKUM1TYEmcbwXZvd6pSeWFPUE9FYv76ffrddF/fA==
+    secure: AAABAFKlq1MjVsSs0gEshO/h0Pqp/jPd4hTmr9Yek5oStYcXrEn3V/uicdNSXk/zrmAecAUuuJw=

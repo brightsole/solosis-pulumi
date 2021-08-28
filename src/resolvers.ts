@@ -12,6 +12,7 @@ const matchesToken = () =>
     async (_parent, _args, context) => context.token === getEnv().token
   );
 
+// TODO FIX ME
 export const getPermissions = () =>
   shield({
     Query: {

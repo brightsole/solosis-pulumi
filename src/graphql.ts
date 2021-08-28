@@ -2,23 +2,18 @@ import { ApolloServer } from 'apollo-server-lambda';
 import * as depthLimit from 'graphql-depth-limit';
 import { applyMiddleware } from 'graphql-middleware';
 import { buildFederatedSchema } from '@apollo/federation';
-import Database from '@brightsole/sleep-talk';
 import { getResolvers } from './resolvers';
+import getThingDatabase from './database';
 import getSchema from './schema';
-import getEnv from './env';
+import { Thing } from './types';
 
 const httpHeadersPlugin = require('apollo-server-plugin-http-headers');
-const { nanoid } = require('nanoid');
 
 const createServer = () => {
-  const thingSource = new Database({
-    tableName: getEnv().tableName,
-    region: getEnv().region,
-    getId: nanoid,
-  });
-
-  const typeDefs: any = getSchema();
+  const thingSource = getThingDatabase<Thing>();
+  const typeDefs = getSchema();
   const resolvers = getResolvers();
+
   // const permissions = getPermissions();
 
   return new ApolloServer({

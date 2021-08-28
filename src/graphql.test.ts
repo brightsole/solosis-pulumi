@@ -1,11 +1,14 @@
 import { createTestClient } from 'apollo-server-testing';
 import { gql } from 'apollo-server-lambda';
-import constructTestServer from './utils';
+import getGraphqlServer from '../test/getGraphqlServer';
+
+// INTEGRATION TEST OF THE FULL PATH
+// more detailed tests exist in the resolvers file
 
 describe('Resolver full path', () => {
   it('creates an item without error', async () => {
     const setHeaderMock = jest.fn();
-    const { server, thingSource } = constructTestServer({ setHeaders: { push: setHeaderMock } });
+    const { server, thingSource } = getGraphqlServer({ setHeaders: { push: setHeaderMock } });
     const itemCreateMock = thingSource.createItem as jest.Mock<any>;
 
     const thingMutation = gql`
