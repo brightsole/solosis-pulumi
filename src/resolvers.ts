@@ -25,11 +25,11 @@ export const getPermissions = () =>
 export const getResolvers = () => ({
   Query: {
     thing: async (_: any, args: IdObject, { dataSources, hashKey }: Context) =>
-      dataSources.thingSource.getItem(args.id, { hashKey }),
+      dataSources.thingSource.getItem(args.id, { hashKey, withMetadata: true }),
     things: async (_: any, args: { input: Query }, { dataSources }: Context) =>
-      dataSources.thingSource.query(args.input),
+      dataSources.thingSource.query(args.input, { withMetadata: true }),
     getAllThings: async (_: any, __: any, { dataSources, hashKey }: Context) =>
-      dataSources.thingSource.getAll({ hashKey }),
+      dataSources.thingSource.getAll({ hashKey, withMetadata: true }),
   },
 
   Mutation: {
@@ -37,22 +37,25 @@ export const getResolvers = () => ({
       _: any,
       args: Input,
       { dataSources, hashKey }: Context
-    ): Promise<GenericThingPayload> => dataSources.thingSource.createItem(args.input, { hashKey }),
+    ): Promise<GenericThingPayload> =>
+      dataSources.thingSource.createItem(args.input, { hashKey, withMetadata: true }),
     updateThing: (
       _: any,
       args: Input,
       { dataSources, hashKey }: Context
-    ): Promise<GenericThingPayload> => dataSources.thingSource.updateItem(args.input, { hashKey }),
+    ): Promise<GenericThingPayload> =>
+      dataSources.thingSource.updateItem(args.input, { hashKey, withMetadata: true }),
     deleteThing: (
       _: any,
       args: IdObject,
       { dataSources, hashKey }: Context
-    ): Promise<GenericThingPayload> => dataSources.thingSource.deleteItem(args.id, { hashKey }),
+    ): Promise<GenericThingPayload> =>
+      dataSources.thingSource.deleteItem(args.id, { hashKey, withMetadata: true }),
   },
 
   Item: {
     __resolveReference: ({ id }: Partial<Thing>, { dataSources, hashKey }: Context) =>
-      dataSources.thingSource.getItem(id, { hashKey }),
+      dataSources.thingSource.getItem(id, { hashKey, withMetadata: true }),
   },
 
   DateTime: GraphQLDateTime,

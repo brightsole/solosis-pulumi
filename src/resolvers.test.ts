@@ -18,7 +18,10 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await thing(null, { id }, { dataSources, hashKey });
-      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, { hashKey });
+      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, {
+        hashKey,
+        withMetadata: true,
+      });
     });
 
     it('getAllThings calls getAll with { hashKey }', async () => {
@@ -35,7 +38,7 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await getAllThings(null, {}, { dataSources, hashKey });
-      expect(dataSources.thingSource.getAll).toHaveBeenCalledWith({ hashKey });
+      expect(dataSources.thingSource.getAll).toHaveBeenCalledWith({ hashKey, withMetadata: true });
     });
 
     it('things calls query with { ...query }', async () => {
@@ -54,7 +57,7 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await things(null, { input }, { dataSources });
-      expect(dataSources.thingSource.query).toHaveBeenCalledWith(input);
+      expect(dataSources.thingSource.query).toHaveBeenCalledWith(input, { withMetadata: true });
     });
 
     it('reference resolver calls getItem on the dataSource with { id }', async () => {
@@ -71,7 +74,10 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await __resolveReference({ id }, { dataSources, hashKey });
-      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, { hashKey });
+      expect(dataSources.thingSource.getItem).toHaveBeenCalledWith(id, {
+        hashKey,
+        withMetadata: true,
+      });
     });
   });
 
@@ -90,7 +96,10 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await createThing(null, { input }, { dataSources, hashKey });
-      expect(dataSources.thingSource.createItem).toHaveBeenCalledWith(input, { hashKey });
+      expect(dataSources.thingSource.createItem).toHaveBeenCalledWith(input, {
+        hashKey,
+        withMetadata: true,
+      });
     });
 
     it('updateThing calls updateItem on the dataSource with { id, name }', async () => {
@@ -107,7 +116,10 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await updateThing(null, { input }, { dataSources, hashKey });
-      expect(dataSources.thingSource.updateItem).toHaveBeenCalledWith(input, { hashKey });
+      expect(dataSources.thingSource.updateItem).toHaveBeenCalledWith(input, {
+        hashKey,
+        withMetadata: true,
+      });
     });
 
     it('deleteThing calls deleteItem on the dataSource with id', async () => {
@@ -124,7 +136,10 @@ describe('Resolvers', () => {
       } = getResolvers();
 
       await deleteThing(null, { id }, { dataSources, hashKey });
-      expect(dataSources.thingSource.deleteItem).toHaveBeenCalledWith(id, { hashKey });
+      expect(dataSources.thingSource.deleteItem).toHaveBeenCalledWith(id, {
+        hashKey,
+        withMetadata: true,
+      });
     });
   });
 });

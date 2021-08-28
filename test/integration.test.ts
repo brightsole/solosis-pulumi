@@ -29,7 +29,7 @@ describe('Resolver full path', () => {
       },
     }));
 
-    const { mutate } = createTestClient(server);
+    const { mutate } = createTestClient(server as any);
     const { errors } = await mutate({
       mutation: thingMutation,
       variables: { input: item },
