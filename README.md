@@ -34,7 +34,7 @@ Soon `duosion` will be about, and handle the federation; but for now, this is an
 
 That will output the URL you've deployed the service to in AWS! EXCITING!!!
 
-The named migration from `thing` and `things` and `someThing` is now handled by a codemod. Simply run it to replace the **monstrously generic** resource name with something useful like `image` or `bingleBop` or something!
+The named migration from `thing` and `things` and `someThing` is now handled by a codemod. Simply run it to replace the **monstrously generic** resource name with singular resources that are useful like `image` or `user`!
 
 #### THE PULUMI THAT GOT THIS STARTED
 ```sh
@@ -51,7 +51,7 @@ It ends up being quite easy to use and to parse.
 
 
 ### CHOICES THAT HAVE BEEN MADE
-1. assuming all items within will have a `hashKey` that isn't unique, and an `id` that is. This means we're assuming most gets will be for a small list of items related to a `userId` or anything similar *(implemented in this example repo as an `x-user-id` header that is put into context as `hashKey`)*
+1. assuming all items within will have a `hashKey` that isn't unique, and an `id` that is. This means we're assuming most gets will be for a small list of items related to a `userId` or similar *(implemented in this example repo as an `x-user-id` header that is put into context as `hashKey`)*
 1. replacing CD complexity for `graphql-shield`
     - instead of doing complicated devops like putting this behind a private VPC subnet, I've decided to have a very basic auth `x-auth-token` header that is checked against requests. That means these apis will remain accessible to anyone that knows the token you set. But that's actually an amazing feature; that means you can test the service **fully** before implementing the gateway, and even after you've done so. The `x-auth-token` header that you send through in your requests can just be added to the federation gateway, and you'll have secure apis **and** the ability to test changes in your microservices.
 1. replacing DB string complexity with an [ORM](https://www.npmjs.com/package/@brightsole/sleep-talk)

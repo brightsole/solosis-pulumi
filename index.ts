@@ -1,8 +1,7 @@
 import * as aws from '@pulumi/aws';
 import * as awsx from '@pulumi/awsx';
 import * as pulumi from '@pulumi/pulumi';
-import restCallback from './src/rest';
-import graphqlCallback from './src/graphql';
+import graphqlCallback from './src/server';
 
 const stackConfig = new pulumi.Config();
 
@@ -82,14 +81,8 @@ const variables = {
   TABLE_NAME: config.tableName,
 };
 
-const graphqlHandler = new aws.lambda.CallbackFunction('solosis-graphql', {
+const handler = new aws.lambda.CallbackFunction('solosis', {
   callbackFactory: graphqlCallback,
-  environment: { variables },
-  memorySize: 1024,
-  policies,
-} as any);
-const restHandler = new aws.lambda.CallbackFunction('solosis-rest', {
-  callbackFactory: restCallback,
   environment: { variables },
   memorySize: 1024,
   policies,
@@ -101,43 +94,43 @@ const endpoint = new awsx.apigateway.API('solosis', {
     {
       path: '/graphql',
       method: 'ANY',
-      eventHandler: graphqlHandler,
+      eventHandler: handler,
     },
     {
       path: '/things/{id}',
       method: 'POST',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
     {
       path: '/things/{id}',
       method: 'PUT',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
     {
       path: '/things/{id}',
       method: 'GET',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
     {
       path: '/things/{id}',
       method: 'DELETE',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
     {
       path: '/things',
       method: 'POST',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
     {
       path: '/things',
       method: 'GET',
       contentType: 'application/json',
-      eventHandler: restHandler,
+      eventHandler: handler,
     },
   ],
 });

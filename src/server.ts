@@ -1,16 +1,19 @@
-import { ApolloServer } from 'apollo-server-lambda';
+import * as cors from 'cors';
+import * as express from 'express';
+import * as compression from 'compression';
 import * as depthLimit from 'graphql-depth-limit';
+import { ApolloServer } from 'apollo-server-lambda';
 import { applyMiddleware } from 'graphql-middleware';
 import { buildFederatedSchema } from '@apollo/federation';
 import { getResolvers } from './resolvers';
 import getThingDatabase from './database';
 import getSchema from './schema';
+import getRoutes from './routes';
 import { Thing } from './types';
 
 const httpHeadersPlugin = require('apollo-server-plugin-http-headers');
 
-const createServer = () => {
-  const thingSource = getThingDatabase<Thing>();
+const createServer = (thingSource: any) => {
   const typeDefs = getSchema();
   const resolvers = getResolvers();
 
@@ -46,7 +49,28 @@ const createServer = () => {
 };
 
 export default () => {
-  const server = createServer();
+  const thingSource = getThingDatabase<Thing>();
 
-  return server.createHandler();
+  const server = createServer(thingSource);
+
+  return server.createHandler({
+    expressAppFromMiddleware(middleware) {
+      const app = express();
+
+      app.use(cors());
+      app.use(express.json());
+      app.use(express.urlencoded({ extended: true }));
+
+      app.use('/things', getRoutes(thingSource));
+
+      // if you ever wanted to handle gql uploads
+      // app.use(graphqlUploadExpress());
+
+      app.use(middleware);
+
+      app.use(compression());
+
+      return app;
+    },
+  });
 };
