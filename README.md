@@ -1,5 +1,9 @@
 # solosis
 
+> [!CAUTION]
+> Deprecated for [solosis-sst](https://github.com/brightsole/solosis-sst) as of 25, Oct, 2025
+> I still believe in pulumi and it being a gateway drug to learning some IAC, SST is just a nicer easier to use solution.
+
 [<img src="solosis.svg?sanitize=true" height=250>]()
 
 ### What is it?
